@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #443b3b;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .stopwatch {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+        .time {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #666;
+        }
+        .hand {
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: red;
+            top: 35px;
+            left: 50%;
+            transform-origin: bottom;
+            transform: translateX(-50%) rotate(0deg);
+            transition: transform 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <div class="hand" id="hand"></div>
+        <div class="time" id="display">00:00:00</div>
+        <div class="controls">
+            <button onclick="start()">Start</button>
+            <button onclick="stop()">Stop</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+        let elapsedTime = 0;
+        let running = false;
+        let hand = document.getElementById("hand");
+
+        function updateDisplay() {
+            let hours = Math.floor(elapsedTime / 3600);
+            let minutes = Math.floor((elapsedTime % 3600) / 60);
+            let seconds = elapsedTime % 60;
+            document.getElementById("display").innerText = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function updateHand() {
+            let rotation = (elapsedTime % 60) * 6;
+            hand.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
+        }
+
+        function start() {
+            if (!running) {
+                running = true;
+                timer = setInterval(() => {
+                    elapsedTime++;
+                    updateDisplay();
+                    updateHand();
+                }, 1000);
+            }
+        }
+
+        function stop() {
+            clearInterval(timer);
+            running = false;
+        }
+
+        function reset() {
+            clearInterval(timer);
+            running = false;
+            elapsedTime = 0;
+            updateDisplay();
+            hand.style.transform = `translateX(-50%) rotate(0deg)`;
+        }
+    </script>
+</body>
+</html>
