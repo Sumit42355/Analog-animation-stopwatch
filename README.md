@@ -24,7 +24,7 @@ JavaScript: Functionality and timer management
 
 How to Use
 
-Open the index.html file in a web browser.
+Open the StopWatch.html file in a web browser.
 
 Click the Start button to begin the stopwatch.
 
